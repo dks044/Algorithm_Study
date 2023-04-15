@@ -1,6 +1,6 @@
 import java.util.*;
 class Solution {
-    //팩토리얼 함수
+    //팩토리얼 함수(중요)
     public static int fac(int n){
         if(n <=1){
             return 1;
