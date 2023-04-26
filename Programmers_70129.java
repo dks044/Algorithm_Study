@@ -13,7 +13,7 @@ class Solution {
                 if(ch_arr.get(i) == '0'){
                     ch_arr.remove(i);
                     answer[1] +=1;
-                    i--;
+                    i--; //i--를 해줌으로써 완벽하게 요소를 삭제하게 한다.
                 }
             }
             s = Integer.toBinaryString(ch_arr.size());//ex)110
