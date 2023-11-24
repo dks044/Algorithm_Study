@@ -1,6 +1,7 @@
 import java.util.*;
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
+        //2022 KAKAO TECH INTERNSHIP 두 큐 합 같게 만들기
         int transaction = 0;
         Queue<Integer> q1 = createByIntArr(queue1);
         Queue<Integer> q2 = createByIntArr(queue2);
