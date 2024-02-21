@@ -1,36 +1,36 @@
 import java.util.*;
 class Solution {
-    //더이상 검사안하게
-    private static final int STEAL_CHECK = 10000;
-    private static final int SPORTS = 20000;
-    
     public int solution(int n, int[] lost, int[] reserve) {
-        int answer = n - lost.length;
-        Arrays.sort(lost);
-        Arrays.sort(reserve);
+        int answer = 0;
+        int[] students = new int[n+1];
+        for(int i=0;i<students.length;i++) students[i] = 1;
         
-        //여분갖고있는 애가 도난당했을떄 처리
-        for(int i=0;i<reserve.length;i++){
-            for(int j=0;j<lost.length;j++){
-                if(reserve[i] == lost[j]){
-                    answer++;
-                    reserve[i] = STEAL_CHECK;
-                    lost[j] = STEAL_CHECK;
-                    break;
+        for(int i : reserve){
+            students[i] = 2;
+        }
+        
+        for(int i : lost){
+            students[i]--;
+        }
+        
+        for(int i=1;i<students.length;i++){
+            if(students[i]>=2){
+                if(students[i-1]==0 && students[i]>1){
+                    students[i-1]++;
+                    students[i]--;
+                }
+                if(i+1 < students.length && students[i+1]==0 && students[i]>1){
+                    students[i]--;
+                    students[i+1]++;
                 }
             }
         }
         
-        for(int i=0;i<reserve.length;i++){
-            if(reserve[i] != STEAL_CHECK){
-                for(int j=0;j<lost.length;j++){
-                    if(lost[j] == reserve[i]+1 || lost[j] == reserve[i]-1){
-                        answer++;
-                        lost[j] = SPORTS;
-                        break;
-                    }
-                }
-            }else continue;
+        for(int i=1;i<students.length;i++){
+            if(students[i]>=1){
+                answer +=1;
+            }
+            
         }
         
         return answer;
