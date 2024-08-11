@@ -1,16 +1,15 @@
 function solution(people, limit) {
     var answer = 0;
+    var left = 0;
+    var right = people.length-1;
     people.sort((a,b)=>a-b);
-    var slender = 0;
-    var royder = people.length -1;
-
-    while(slender <= royder){
-        let sum = people[slender] + people[royder];
+    while(left <= right){
+        let sum = people[left] + people[right];
         if(sum > limit){
-            royder--;
+            right--;
         }else{
-            slender++;
-            royder--;
+            right--;
+            left++;
         }
         answer++;
     }
