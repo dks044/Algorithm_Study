@@ -1,34 +1,29 @@
 import java.util.*;
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
-        int answer = 0;
-        // count == (diff - level)
-        // 걸리는 시간 (현재시간 + 이전시간) * count + 현재시간
         int left = Arrays.stream(diffs).min().getAsInt();
         int right = Arrays.stream(diffs).max().getAsInt();
-        answer = right;
+        int min = right;
         
         while(left <= right){
-            int mid = (left+right)/2; //level
-            long timeSum = 0;
-            timeSum += times[0];
-            for(int diff=1; diff<diffs.length; diff++){
-                if(mid >= diffs[diff]) timeSum += times[diff];
-                if(mid < diffs[diff]){
-                    int count = diffs[diff] - mid;
-                    int time = (times[diff] + times[diff-1]) * count + times[diff];
-                    timeSum += time;
+            int level = (left + right) / 2;
+            long time = 0;
+            time += times[0];
+            for(int i=1;i<diffs.length;i++){
+                if(level >= diffs[i]) time += times[i];
+                else{
+                    int worngCount = diffs[i] - level;
+                    int ssibal = (times[i] + times[i-1]) * worngCount + times[i];
+                    time += ssibal;
                 }
             }
-            if(timeSum > limit){
-                left = mid +1;
-            }
-            if(timeSum <= limit){
-                right = mid -1;
-                answer = Math.min(mid, answer);
+            if(time > limit){
+                left = level +1;
+            }else{
+                right = level -1;
+                min = Math.min(min,level);
             }
         }
-
-        return answer;
+        return min;
     }
 }
