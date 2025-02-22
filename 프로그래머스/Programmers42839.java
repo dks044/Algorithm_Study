@@ -4,7 +4,7 @@ class Solution {
     static int answer = 0;
     static Set<Integer> set = new HashSet<>();
     static boolean[] visited;
-    
+    //
     public int solution(String numbers) {
         //틀
         visited = new boolean[numbers.length()];
