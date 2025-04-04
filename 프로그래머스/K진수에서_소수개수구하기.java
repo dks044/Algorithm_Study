@@ -2,32 +2,32 @@ import java.util.*;
 class Solution {
     public int solution(int n, int k) {
         int answer = 0;
-        boolean isZero = false;
-        for(String ssibal : 진법찾는놈(n,k).split("0")){
-            if(!ssibal.isEmpty()){
-                if(나는소수다(Long.parseLong(ssibal))) answer++;    
-            }
+        String numWord = K진수구하기(n,k,"");
+        for(String w : numWord.split("0")){
+            if(!w.isEmpty() && 소수구하기(Long.parseLong(w))) answer++;
         }
-
         return answer;
     }
-    static String 진법찾는놈(int base, int k) {
-        int start = base;
-        StringBuilder jujitsu = new StringBuilder();
-        while (start > 0) {
-            int realNakedChoke = start % k;
-            start /= k;
-            jujitsu.append(realNakedChoke);
+
+    static String K진수구하기(int n, int k,String temp){
+        if(n == 0) {
+            return temp;
         }
-        
-        // 문자열을 반전한 후 정수로 변환
-        return jujitsu.reverse().toString();
+        return K진수구하기(n / k, k, (n % k) + temp);
     }
-    
-    static boolean 나는소수다(long n){
-        if(n < 2) return false;
-        for(int i=2;i<=Math.sqrt(n);i++){
-            if(n % i == 0) return false;
+    static String 문자열뒤집기(String word){
+        StringBuilder sb = new StringBuilder();
+        for(int i=word.length()-1;i >= 0;i--){
+            sb.append(word.charAt(i));
+        }
+        return sb.toString();
+    }
+    static boolean 소수구하기(long num){
+        if(num < 2) return false;
+        if(num == 2) return true;
+        if(num % 2 == 0) return false;
+        for(int i=3; i<=Math.sqrt(num); i+=2){
+            if(num % i == 0) return false;
         }
         return true;
     }
