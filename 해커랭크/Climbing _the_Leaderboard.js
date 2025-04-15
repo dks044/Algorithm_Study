@@ -32,26 +32,24 @@ function readLine() {
  */
 
 function climbingLeaderboard(ranked, player) {
-    var answer = [];
-    var set = new Set([...ranked].sort());
-    var sortRanked = [...set].sort((a,b)=> b - a);
-    var length = sortRanked.length-1;
-    
-    for(let p of player){
-        let mid = 0;
+    const uniqueRanked = [...new Set(ranked)].sort((a, b) => b - a);
+    const answer = [];
+
+    for (let p of player) {
         let left = 0;
-        let right = length;
-        while(left <= right){
-            mid = Math.floor((left+right) / 2);
-            if(sortRanked[mid] === p) break;
-            if(p > sortRanked[mid]){
-                right = mid -1;
-            }else{
+        let right = uniqueRanked.length - 1;
+
+        while (left <= right) {
+            let mid = Math.floor((left + right) / 2);
+            if (uniqueRanked[mid] > p) {
                 left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
-        if(p < sortRanked[mid]) answer.push(mid +2);
-        else answer.push(mid+1);
+
+        
+        answer.push(left + 1);
     }
 
     return answer;
