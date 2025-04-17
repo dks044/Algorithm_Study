@@ -1,27 +1,25 @@
-
-
 function solution(sequence, k) {
-    let min = Infinity;
+    var minLength = Infinity;
     var answer = [];
-    let left = 0;
-    let right = 0;
-    let sum = sequence[0];
-    
-    while(left <= right && right < sequence.length){
+    var left = 0;
+    var right = 0;
+    var sum = sequence[0];
+    while(right < sequence.length && left <= right){
         if(sum < k){
             right++;
-            if (right < sequence.length) sum += sequence[right];
+            if(right < sequence.length) sum += sequence[right];
         }
-        else if(sum > k){
+        if(sum > k){
             sum -= sequence[left++];
-        }else{
-            if(min > (right - left)) {
-                min = right - left;
+        }
+        if(sum == k){
+            if(minLength > (right - left)){
                 answer = [left,right];
+                minLength = right - left;
             }
             sum -= sequence[left++];
         }
     }
+    
     return answer;
 }
-
