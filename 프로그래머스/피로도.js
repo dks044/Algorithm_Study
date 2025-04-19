@@ -1,21 +1,20 @@
 function solution(k, dungeons) {
-    const visited = new Array(dungeons.length).fill(false);
-    return dfs(visited, 0, k, dungeons);
+    var visited = new Array(dungeons.length).fill(false);
+    
+    return dfs(visited,k,dungeons,0, - Infinity);
 }
 
-const dfs = (visited, count, k, dungeons) => {
+const dfs = (visited, k, dungeons, count) => {
     let max = count;
-
-    for (let i = 0; i < dungeons.length; i++) {
-        const [need, use] = dungeons[i];
-
-        if (!visited[i] && k >= need) {
+    for(let i=0;i<dungeons.length;i++){
+        let need = dungeons[i][0];
+        let use = dungeons[i][1];
+        if(!visited[i] && k >= need && k - use >= 0){
             visited[i] = true;
-            const next = dfs(visited, count + 1, k - use, dungeons);
-            max = Math.max(max, next);
+            const next = dfs(visited, k - use, dungeons, count + 1);
+            max = Math.max(max,next);
             visited[i] = false;
         }
     }
-
     return max;
-};
+}
