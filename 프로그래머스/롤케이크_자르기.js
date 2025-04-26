@@ -1,22 +1,21 @@
 function solution(topping) {
     var answer = 0;
-    var big_brohter = new Map();
-    var brother = new Map();
-    //동생먼저 다 가져가라ㅋㅋ
+    const big_brother = new Map();
+    const brother = new Map();
     for(let t of topping){
-        brother.set(t,(brother.get(t) || 0) +1);
+        brother.set(t, (brother.get(t) || 0)+1 );
     }
-    for(let i=0;i<topping.length;i++){
-        let unit = topping[i];
-        //형 한테 주기
-        big_brohter.set(unit,(big_brohter.get(unit) || 0) +1);
+    for(let t of topping){
+        big_brother.set(t, (big_brother.get(t) || 0)+1 );
         
-        //동생 제거
-        brother.set(unit, brother.get(unit) - 1);
-        if(brother.get(unit) ===0){
-            brother.delete(unit);
+        brother.set(t, brother.get(t) - 1);
+        if(brother.get(t) === 0){
+            brother.delete(t);
         }
-        if(brother.size === big_brohter.size) answer++;
+        
+        if(big_brother.size === brother.size){
+            answer++;
+        }
     }
     
     
