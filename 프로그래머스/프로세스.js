@@ -1,39 +1,30 @@
 function solution(priorities, location) {
-    var answer = 0;
     const q = [];
-    for(let i=0;i<priorities.length;i++) q.push(Process(i,priorities[i]));
-
-    let useIndex = 1;
+    priorities.forEach((v,i)=> q.push(new Process(i,v)));
     
+    let use =1;
     while(q.length !== 0){
         const current = q.shift();
-        let useFlag = true;
-        if(isOverPriority(current.priority,q)){
+        if(isOverProiority(current,q)){
             q.push(current);
-            useFlag = false;
         }else{
             if(current.index === location){
-                return useIndex;
+                return use;
             }
-        }
-        if(useFlag){
-            useIndex++;
+            use++;
         }
     }
-    
-    return answer;
+    return use;
 }
 
-
-const Process = (index, priority) => {
-    return {index,priority}
+function Process(index,proiortie){
+    this.index = index;
+    this.proiortie = proiortie;
 }
 
-const isOverPriority = (currentPriority,q) => {
+const isOverProiority = (current, q) =>{
     for(const process of q){
-        if(currentPriority < process.priority){
-            return true;
-        }
+        if(current.proiortie < process.proiortie) return true;
     }
     return false;
-} 
+}
