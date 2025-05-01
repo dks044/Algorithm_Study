@@ -1,22 +1,17 @@
 function solution(cards) {
     var answer = 0;
-    var visited = new Array(cards.length).fill(false);
-    var groupsize = [];
-    
+    const visited = new Array(cards.length).fill(false);
+    const groupsize = [];
     for(let i=0;i<cards.length;i++){
-        let cardindex = i;
-        let count = 0;
- 
-        while(!visited[cardindex]){
-            visited[cardindex]=true;
-            cardindex = cards[cardindex]-1;
-            count++;
+        let card = i;
+        let size = 0;
+        while(!visited[card]){
+            visited[card] = true;
+            card = cards[card]-1;
+            size++;
         }
-        if(count > 0) groupsize.push(count);
+        groupsize.push(size);
     }
-    
     groupsize.sort((a,b)=> b - a);
-    
-    
     return groupsize.length === 1 ? 0 : groupsize[0] * groupsize[1];
 }
