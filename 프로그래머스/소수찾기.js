@@ -1,30 +1,33 @@
+
 function solution(numbers) {
     var answer = 0;
-    var visited = Array(numbers.length).fill(false);
-    var set = new Set();
-    dfs(visited,numbers,set,'');
-
-    set.forEach((value)=>{
-        if(isPrime(value)) answer++;
+    const visited = new Array(numbers.length).fill(false);
+    const filterNums = new Set();
+    dfs(visited,filterNums,"",numbers);
+    filterNums.forEach((v)=>{
+        console.log(v);
+        if(isPrime(v)) answer++;
     })
+    
     return answer;
 }
 
-function dfs(visited,numbers,set,word) {
+const dfs = (visited,filterNums,word,numbers) => {
     for(let i=0;i<numbers.length;i++){
         if(!visited[i]){
-            visited[i] = true;
-            set.add(parseInt(word + numbers[i]));
-            dfs(visited,numbers,set,word + parseInt(numbers[i]));
-            visited[i] = false;
+            filterNums.add(Number(word + numbers[i]));
+            visited[i]=true;
+            dfs(visited,filterNums,word + numbers[i],numbers);
+            visited[i]=false;
         }
     }
 }
 
-const isPrime = (num) => {
-    if(num < 2) return false;
-    for(let i=2;i<=Math.sqrt(num);i++){
-        if(num % i ==0) return false;
+const isPrime = (filterNum) => {
+    if(filterNum < 2) return false;
+    for(let i=2;i<=Math.sqrt(filterNum);i++){
+        if(filterNum % i === 0) return false;
     }
+    
     return true;
 }
