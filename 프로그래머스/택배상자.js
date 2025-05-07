@@ -1,23 +1,24 @@
 function solution(order) {
-    let answer = 0;
-    let container = Array.from({ length: order.length }, (_, index) => index + 1);
-    let subContainer = [];
+  let answer = 0;
+  let stack = [];
+  let current = 1;
 
-    let orderIndex = 0;
+  for (let i = 0; i < order.length; i++) {
+    let target = order[i];
 
-    for (let i = 0; i < order.length; i++) {
-        let box = container[i];
-
-        // 컨테이너에서 상자 하나씩 순서대로 처리
-        subContainer.push(box);
-
-        // 트럭에 실을 수 있을 때까지 계속 실음
-        while (subContainer.length && subContainer[subContainer.length - 1] === order[orderIndex]) {
-            subContainer.pop();
-            answer++;
-            orderIndex++;
-        }
+    // target이 나올 때까지 stack에 push
+    while (current <= order.length && current <= target) {
+      stack.push(current++);
     }
 
-    return answer;
+    // 스택 맨 위가 target이 맞으면 꺼냄
+    if (stack[stack.length - 1] === target) {
+      stack.pop();
+      answer++;
+    } else {
+      break;
+    }
+  }
+
+  return answer;
 }
