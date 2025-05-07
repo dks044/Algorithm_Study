@@ -8,21 +8,18 @@ function solution(files) {
         let tail = '';
         let index = 0;
         
-        // head: 숫자 나오기 전까지 몽땅
-        while (index < fileLength && (isNaN(f[index]) || f[index] === ' ')) {
+        while((isNaN(f[index]) || f[index] === ' ')) {
             head += f[index];
             index++;
         }
 
-        // number: 최대 5자리 숫자
         let count = 0;
-        while (index < fileLength && !isNaN(f[index]) && f[index] !== ' ' && count < 5) {
+        while (!isNaN(f[index]) && f[index] !== ' ' && count < 5) {
             number += f[index];
             index++;
             count++;
         }
 
-        // tail: 남은거 전부
         while (index < fileLength) {
             tail += f[index];
             index++;
