@@ -1,28 +1,33 @@
-let answer = [];
 function solution(tickets) {
-
-    tickets.sort((a, b) => a[1].localeCompare(b[1]));
+    var answer = [];
+    tickets.sort((a, b) =>
+      a[0] === b[0]
+        ? a[1].localeCompare(b[1])
+        : a[0].localeCompare(b[0])
+    );
+    const visited = new Array(tickets.length).fill(false);
+    const realPath = dfs(['ICN'],visited,tickets);
     
-    const visited = Array(tickets.length).fill(false);
-    dfs(['ICN'],visited,tickets,0);
     
-    return answer;
+    return realPath;
 }
 
-const dfs = (str,visited,tickets,depth) => {
-    if(depth === tickets.length){
-        answer = [...str];
-        return true;
-    }else{
-        for(let i=0;i<tickets.length;i++){
-            if(!visited[i] && str[str.length-1] === tickets[i][0]){
-                visited[i] = true;
-                str.push(tickets[i][1]);
-                if(dfs(str, visited, tickets, depth + 1)) return true;
-                
-                str.pop();
-                visited[i] = false;
-            }
-        }   
+const dfs = (path,visited,tickets) => {
+    if(path.length === tickets.length+1){
+         return [...path];
+    }
+    
+    for(let i=0;i<tickets.length;i++){
+        const start = path[path.length-1];
+        const ticketsStart = tickets[i][0];
+        const ticketsEnd = tickets[i][1];
+        if(!visited[i] && start === ticketsStart){
+            visited[i] = true;
+            path.push(ticketsEnd);
+            const result = dfs(path,visited,tickets);
+            if(result) return result;
+            visited[i] = false;
+            path.pop();
+        }
     }
 }
