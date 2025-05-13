@@ -1,4 +1,4 @@
-var count = Infinity;
+
 function solution(begin, target, words) {
     const visited = new Array(words.length).fill(false);
     var answer = dfs(visited, begin, words, target, 0);
