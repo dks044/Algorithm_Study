@@ -1,22 +1,15 @@
 function solution(progresses, speeds) {
     var answer = [];
-    //var day =0;
-    var check = 0;
+    let progressesIndex = 0;
     while(!isDoneProgress(progresses)){
-        progresses = progresses.map((progres,index) => progres + speeds[index]);
-        //day++;
-        
-        let count =0;
-        while(progresses[check] >= 100){
-            if(progresses[check] >= 100){
-                check++;
-                count++;    
-            }
+        progresses = progresses.map((value,index)=> value + speeds[index]);
+        let count = 0;
+        while(progresses[progressesIndex] >= 100){
+            count++;
+            progressesIndex++;
         }
         if(count > 0) answer.push(count);
-        //console.log(day,'일차 => ',progresses);
     }
-    
     return answer;
 }
 
