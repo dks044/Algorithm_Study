@@ -1,90 +1,99 @@
-const Point = (x, y, dist) => {
-    return { x, y, dist };
-}
-
-const PHONE = [[1,2,3],[4,5,6],[7,8,9],['*',0,'#']];
 const LEFT = [1,4,7];
-const MIDDLE = [2,5,8,0];
+const MID = [2,5,8,0];
 const RIGHT = [3,6,9];
 
-const ROW = 4;
-const COL = 3;
+const map = new Map([['*',10],[0,11],['#',12]]); 
 
-const MOVE = 4;
-const movex = [1,-1,0,0];
-const movey = [0,0,-1,1];
-
+const mx = [1,-1,0,0];
+const my = [0,0,1,-1];
 
 function solution(numbers, hand) {
     var answer = '';
-    var left = '*';
-    var right = '#';
+    let left = '*'; // *은 걍 10으로 친다
+    let right = '#'; // *은 걍 12로 친다
+    let count = 1;
     
+    let graph = Array.from({length: 4 }, () =>(
+        Array.from({length: 3}, () => count ++)
+    ))
+
     for(let num of numbers){
         if(LEFT.includes(num)){
+            answer += 'L'
             left = num;
-            answer += 'L';
-        }
-        if(RIGHT.includes(num)){
+        }else if(RIGHT.includes(num)){
+            answer += 'R'
             right = num;
-            answer += 'R';
-        }
-        if(MIDDLE.includes(num)){
-            let left_dist = bfs(left,num);
-            let right_dist = bfs(right,num);
-            if(left_dist < right_dist){
+        }else{
+            // *,0,# 예외 처리
+            if(num === 0) num = map.get(num);
+            if(map.has(left)) left = map.get(left);
+            if(map.has(right)) right = map.get(right);
+            //거리 계산
+            const leftHand = findPostionXY(graph,left);
+            const rightHand = findPostionXY(graph,right);
+            const target = findPostionXY(graph,num);
+            
+            const leftDist = bfs(leftHand,target);
+            const rightDist = bfs(rightHand,target);
+            
+            if(leftDist > rightDist){
                 answer += 'L';
                 left = num;
-            }
-            if(left_dist > right_dist){
+            }else if(rightDist > leftDist){
                 answer += 'R';
                 right = num;
-            }
-            if(left_dist == right_dist){
-                if(hand === 'right'){
-                    answer += 'R';
-                    right = num;
-                }
+            }else{
                 if(hand === 'left'){
                     answer += 'L';
                     left = num;
+                }else{
+                    answer += 'R';
+                    right = num;
                 }
             }
         }
     }
-    
     return answer;
 }
-function getPosition(current){
-    for(let i=0;i<PHONE.length;i++){
-        for(let j=0;j<PHONE[i].length;j++){
-            if(PHONE[i][j] == current){
-                return Point(i,j,0);
+
+const Position = (x,y,dist) => {
+    return {x,y,dist};
+}
+
+const findPostionXY = (graph, hand) => {
+    for(let i=0;i<4;i++){
+        for(let j=0;j<3;j++){
+            if(graph[i][j] === hand){
+                return Position(i,j,0);
             }
         }
     }
 }
 
+//첫번쨰에는 손가락이, 두번쨰는 타겟(키패드)
+const bfs = (startPosition, target) => {
+    const q = [startPosition];
+    const visited = Array(4).fill(false).map(()=>new Array(3).fill(false));
+    visited[startPosition.x][startPosition.y] = true;
+    while(q.length > 0){
+        const current = q.shift();
+        const { x, y, dist } = current;
 
-function bfs(current,target){
-    let start = getPosition(current);
-    let q = [start];
-    let visited = new Array(ROW).fill(false).map(()=>new Array(COL).fill(false));
-    while(q.length != 0){
-        let current = q.shift();
-        if(PHONE[current.x][current.y] == target){
-            return current.dist;
+        if (x === target.x && y === target.y) {
+            return dist;
         }
-        //상하좌우 ㄱㄱ
-        for(let i=0;i<MOVE;i++){
-            let x = current.x + movex[i];
-            let y = current.y + movey[i];
-            let dist = current.dist;
-            if(x >= 0 && x < ROW && y >= 0 && y < COL){
-                if(!visited[x][y]){
-                    q.push(Point(x,y,dist + 1));
-                }
+        
+        //상하좌우 이동하면서 탐색
+        for (let i = 0; i < 4; i++) {
+            const nx = x + mx[i];
+            const ny = y + my[i];
+
+            if (nx >= 0 && nx < 4 && ny >= 0 && ny < 3 && !visited[nx][ny]) {
+                visited[nx][ny] = true;
+                q.push(Position(nx, ny, dist + 1));
             }
         }
     }
 }
+
