@@ -1,21 +1,24 @@
 function solution(progresses, speeds) {
     var answer = [];
-    let progressesIndex = 0;
-    while(!isDoneProgress(progresses)){
-        progresses = progresses.map((value,index)=> value + speeds[index]);
+    
+    let index = 0;
+    while(!over(progresses)){
+        progresses = progresses.map((value, index) => value + speeds[index]);
+        
         let count = 0;
-        while(progresses[progressesIndex] >= 100){
+        while(progresses[index] >= 100){
             count++;
-            progressesIndex++;
+            index++;
         }
         if(count > 0) answer.push(count);
     }
+    
     return answer;
 }
 
-const isDoneProgress = (progresses) => {
-    for(let p of progresses){
-        if(p < 100) return false;
+const over = (progresses) => {
+    for(const progress of progresses){
+        if(progress < 100) return false;
     }
     return true;
 }
