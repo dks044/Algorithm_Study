@@ -1,32 +1,34 @@
 function solution(priorities, location) {
     var answer = 0;
-    const q = [];
+    const arr = [];
     for(let i=0;i<priorities.length;i++){
-        q.push(Process(priorities[i],i));
+        arr.push(new Process(priorities[i],i));
     }
-    let playCount = 1;
-    while(q.length > 0){
-        const process = q.shift();
-        if(overProcess(process,q)){
-            q.push(process);
+    let count = 1;
+    while(arr.length > 0){
+        const current = arr.shift();
+
+        if(overProcess(current,arr)){
+            arr.push(current);
         }else{
-            if(process.index === location){
-                return playCount;
+            if(current.index === location){
+                return count;
             }
-            playCount++;
+            count++;
         }
     }
     
     return answer;
 }
 
-const overProcess = (process,q) => {
-    for(const p of q){
-        if(p.prioritie > process.prioritie) return true;
-    }
-    return false;
+function Process(prioritie,index){
+    this.prioritie = prioritie;
+    this.index = index;
 }
 
-const Process = (prioritie, index) => {
-    return {prioritie,index};
+function overProcess(current,arr){
+    for(const process of arr){
+        if(current.prioritie < process.prioritie) return true;
+    }
+    return false;
 }
