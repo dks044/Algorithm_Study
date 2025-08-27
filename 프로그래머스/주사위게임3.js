@@ -1,3 +1,50 @@
+//방금푼거
+function solution(a, b, c, d) {
+    var answer = 0;
+    
+    //map 할당
+    const map = new Map();
+    map.set(a, (map.get(a) || 0) +1 );
+    map.set(b, (map.get(b) || 0) +1 );
+    map.set(c, (map.get(c) || 0) +1 );
+    map.set(d, (map.get(d) || 0) +1 );
+    
+    const sortedMap = ([...map.entries()].sort((a,b)=> a - b));
+    console.log(sortedMap);
+    
+    const firstK = sortedMap[0][0];
+    const firstV = sortedMap[0][1];
+    
+    const secondK = sortedMap[1]?.[0] ?? 0;
+    const secondV = sortedMap[1]?.[1] ?? 0;
+
+    const thirdK = sortedMap[2]?.[0] ?? 0;
+    const thirdV = sortedMap[2]?.[1] ?? 0;
+
+    const fourK  = sortedMap[3]?.[0] ?? 0;
+    const fourV  = sortedMap[3]?.[1] ?? 0;
+    
+    
+    //네 주사위에서 나온 숫자가 모두 p로 같다면
+    if(firstV === 4){
+        return firstK * 1111;
+    }else if(firstV === 3){
+        return (10 * firstK + secondK) * (10 * firstK + secondK);
+        
+    }else if(firstV === 2 && firstV === secondV){
+        return (firstK + secondK) * Math.abs(firstK - secondK);
+        
+    }else if(firstV === 2 && secondK !== thirdK){
+        return secondK * thirdK;
+    }else{
+        const keyMap = [...map.entries()].sort((a, b) => a[0] - b[0]);
+        return keyMap[0][0];
+    }
+    
+    return answer;
+}
+
+//이전푼거
 function solution(a, b, c, d) {
     var answer = 0;
     const map = new Map();
