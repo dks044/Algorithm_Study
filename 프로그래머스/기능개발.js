@@ -1,24 +1,25 @@
+const DONE_PERCENT = 100;
+
 function solution(progresses, speeds) {
+    let index = 0;
     var answer = [];
     
-    let index = 0;
-    while(!over(progresses)){
-        progresses = progresses.map((value, index) => value + speeds[index]);
-        
-        let count = 0;
-        while(progresses[index] >= 100){
-            count++;
+    while(!isWorkDone(progresses)){
+        progresses = progresses.map((v, i) => v + speeds[i]);
+        let doneCount = 0;
+        while(progresses[index] >= DONE_PERCENT){
+            doneCount++;
             index++;
         }
-        if(count > 0) answer.push(count);
+        if(doneCount > 0) answer.push(doneCount);
     }
     
     return answer;
 }
 
-const over = (progresses) => {
-    for(const progress of progresses){
-        if(progress < 100) return false;
+const isWorkDone = (progresses) => {
+    for(let progress of progresses){
+        if(progress < DONE_PERCENT) return false;
     }
     return true;
 }
