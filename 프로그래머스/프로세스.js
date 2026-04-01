@@ -1,34 +1,40 @@
 function solution(priorities, location) {
     var answer = 0;
-    const arr = [];
-    for(let i=0;i<priorities.length;i++){
-        arr.push(new Process(priorities[i],i));
-    }
-    let count = 1;
-    while(arr.length > 0){
-        const current = arr.shift();
-
-        if(overProcess(current,arr)){
-            arr.push(current);
+    processes = makeProcesses(priorities);
+    
+    let startCount = 1;
+    while(processes.length > 0){
+        const currentProcess = processes.shift();
+        if(isHigherThanPriority(currentProcess,processes)){
+            processes.push(currentProcess);
         }else{
-            if(current.index === location){
-                return count;
+            if(location === currentProcess.index){
+                answer = startCount;
+                break;
             }
-            count++;
+            startCount++;
         }
     }
     
     return answer;
 }
 
-function Process(prioritie,index){
-    this.prioritie = prioritie;
+function Process(index,priority){
     this.index = index;
+    this.priority = priority;
 }
 
-function overProcess(current,arr){
-    for(const process of arr){
-        if(current.prioritie < process.prioritie) return true;
+const makeProcesses = (priorities) => {
+    const processes = [];
+    for(let p=0;p<priorities.length;p++){
+        processes.push(new Process(p,priorities[p]));
+    }
+    return processes;
+}
+
+const isHigherThanPriority = (process, processes) => {
+    for(let p of processes){
+        if(p.priority > process.priority) return true;
     }
     return false;
 }
